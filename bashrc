@@ -364,6 +364,40 @@ untiny() {
 	echo "$last_location"
 }
 
+# ACD Custom Functions
+# Make and move to new directory
+mcd() {
+    mkdir -p "$1" && cd "$1"
+}
+
+# Make directory, navigate to it, and open a second terminal in the new directory
+mcdd() {
+    # Create directory and navigate to it
+    mkdir -p "$1" && cd "$1"
+    
+    # Determine which terminal emulator is being used and open a new tab accordingly
+    current_dir=$(pwd)
+    
+    # For Linux terminals (GNOME Terminal, Konsole, xfce4-terminal)
+    if command -v gnome-terminal &> /dev/null; then
+        gnome-terminal --tab --working-directory="$current_dir"
+    elif command -v konsole &> /dev/null; then
+        konsole --new-tab --workdir "$current_dir"
+    elif command -v xfce4-terminal &> /dev/null; then
+        xfce4-terminal --tab --working-directory="$current_dir"
+    # For macOS Terminal (without osascript)
+    elif [[ "$OSTYPE" == "darwin"* ]]; then
+        # Open a new terminal window in the current directory
+        open -a Terminal "$current_dir"
+    else
+        echo "Unable to automatically open a new terminal tab."
+        echo "A new directory has been created and you're now in: $current_dir"
+    fi
+    
+    echo "Directory created at: $current_dir"
+}
+
+
 # Load external files
 . ~/.bash_aliases    2>/dev/null || true
 . ~/.bashrc.local    2>/dev/null || true
