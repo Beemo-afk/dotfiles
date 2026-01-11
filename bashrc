@@ -60,8 +60,8 @@ alias chomd='chmod'
 alias externalip='curl -sS https://www.daveeddy.com/ip'
 alias gerp='grep'
 alias hl='rg --passthru'
-alias l='ls'
-alias ll='ls -lha'
+alias l='lsd'
+alias ll='lsd -lhat'
 alias suod='sudo'
 grep --color=auto < /dev/null &>/dev/null && alias grep='grep --color=auto'
 xdg-open --version &>/dev/null && alias open='xdg-open'
@@ -370,7 +370,41 @@ mcd() {
     mkdir -p "$1" && cd "$1"
 }
 
+# Get my ip:
+myip() {
+    echo "ip is: $(curl -s https://ipinfo.io/ip)"
+}
+
 # Make directory, navigate to it, and open a second terminal in the new directory
+# Convert the pre-made ssh string to local port forward format
+emr_proxy() {
+    # Default ports if not specified
+    local forward_port=${2:-8157}
+    local ec2_port=${3:-18080}
+
+    # Extract components from the original SSH command using regex
+    if [[ $1 =~ ssh[[:space:]]+-i[[:space:]]+([^[:space:]]+)[[:space:]]+([^@]+)@([^[:space:]]+) ]]; then
+        local key_path="${BASH_REMATCH[1]}"
+        local user="${BASH_REMATCH[2]}"
+        local host="${BASH_REMATCH[3]}"
+
+        # Construct the new SSH command
+        local cmd="ssh -i \"$key_path\" -N -L ${forward_port}:${host}:${ec2_port} ${user}@${host}"
+
+        # Print the command
+        echo "Executing command:"
+        echo "$cmd"
+        echo
+
+        # Execute the command
+        eval "$cmd"
+    else
+        echo "Error: Invalid SSH command format"
+        echo "Usage: emr_proxy \"ssh -i key.pem user@host\" [forward_port] [ec2_port]"
+        return 1
+    fi
+}
+
 mcdd() {
     # Create directory and navigate to it
     mkdir -p "$1" && cd "$1"
@@ -409,3 +443,5 @@ mcdd() {
 path_clean
 
 true
+
+[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path bash)"
