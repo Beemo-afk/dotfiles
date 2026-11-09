@@ -1,0 +1,26 @@
+# Theme palette: Tokyo Night Light
+# Source: alacritty/alacritty-theme (tokyo_night_light.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="tokyo-night-light"
+THEME_LABEL="Tokyo Night Light"
+THEME_MODE="light"
+
+background="#d6d8df"
+foreground="#343b58"
+cursor="#707280"
+black="#343b58"
+red="#c24242"
+green="#41a6b5"
+yellow="#8f5e15"
+blue="#2959aa"
+magenta="#7b43ba"
+cyan="#006c86"
+white="#707280"
+brightBlack="#343b58"
+brightRed="#c24242"
+brightGreen="#41a6b5"
+brightYellow="#8f5e15"
+brightBlue="#2959aa"
+brightMagenta="#7b43ba"
+brightCyan="#006c86"
+brightWhite="#707280"

@@ -1,0 +1,26 @@
+# Theme palette: Gruvbox Material Medium Light
+# Source: alacritty/alacritty-theme (gruvbox_material_medium_light.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="gruvbox-material-medium-light"
+THEME_LABEL="Gruvbox Material Medium Light"
+THEME_MODE="light"
+
+background="#fbf1c7"
+foreground="#654735"
+cursor="#654735"
+black="#654735"
+red="#c14a4a"
+green="#6c782e"
+yellow="#b47109"
+blue="#45707a"
+magenta="#945e80"
+cyan="#4c7a5d"
+white="#eee0b7"
+brightBlack="#654735"
+brightRed="#c14a4a"
+brightGreen="#6c782e"
+brightYellow="#b47109"
+brightBlue="#45707a"
+brightMagenta="#945e80"
+brightCyan="#4c7a5d"
+brightWhite="#eee0b7"

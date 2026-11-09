@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+. ./jsonvar.bash || exit 1
+
+declare -n proxy_var='_jv_ref[_jv_key]'
+
+jsonvar proxy_var

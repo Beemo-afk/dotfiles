@@ -1,0 +1,26 @@
+# Theme palette: Rosé Pine Moon
+# Source: alacritty/alacritty-theme (rose_pine_moon.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="rose-pine-moon"
+THEME_LABEL="Rosé Pine Moon"
+THEME_MODE="dark"
+
+background="#232136"
+foreground="#e0def4"
+cursor="#56526e"
+black="#393552"
+red="#eb6f92"
+green="#3e8fb0"
+yellow="#f6c177"
+blue="#9ccfd8"
+magenta="#c4a7e7"
+cyan="#ea9a97"
+white="#e0def4"
+brightBlack="#6e6a86"
+brightRed="#eb6f92"
+brightGreen="#3e8fb0"
+brightYellow="#f6c177"
+brightBlue="#9ccfd8"
+brightMagenta="#c4a7e7"
+brightCyan="#ea9a97"
+brightWhite="#e0def4"

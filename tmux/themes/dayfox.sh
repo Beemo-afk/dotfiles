@@ -1,0 +1,26 @@
+# Theme palette: Dayfox
+# Source: alacritty/alacritty-theme (dayfox.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="dayfox"
+THEME_LABEL="Dayfox"
+THEME_MODE="light"
+
+background="#f6f2ee"
+foreground="#3d2b5a"
+cursor="#643f61"
+black="#352c24"
+red="#a5222f"
+green="#396847"
+yellow="#ac5402"
+blue="#2848a9"
+magenta="#6e33ce"
+cyan="#287980"
+white="#f2e9e1"
+brightBlack="#534c45"
+brightRed="#b3434e"
+brightGreen="#577f63"
+brightYellow="#b86e28"
+brightBlue="#4863b6"
+brightMagenta="#8452d5"
+brightCyan="#488d93"
+brightWhite="#f4ece6"

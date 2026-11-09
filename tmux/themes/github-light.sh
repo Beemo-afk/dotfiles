@@ -1,0 +1,26 @@
+# Theme palette: GitHub Light
+# Source: alacritty/alacritty-theme (github_light.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="github-light"
+THEME_LABEL="GitHub Light"
+THEME_MODE="light"
+
+background="#ffffff"
+foreground="#24292f"
+cursor="#24292f"
+black="#24292e"
+red="#d73a49"
+green="#28a745"
+yellow="#dbab09"
+blue="#0366d6"
+magenta="#5a32a3"
+cyan="#0598bc"
+white="#6a737d"
+brightBlack="#959da5"
+brightRed="#cb2431"
+brightGreen="#22863a"
+brightYellow="#b08800"
+brightBlue="#005cc5"
+brightMagenta="#5a32a3"
+brightCyan="#3192aa"
+brightWhite="#d1d5da"

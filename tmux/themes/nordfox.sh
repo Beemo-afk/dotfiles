@@ -1,0 +1,26 @@
+# Theme palette: Nordfox
+# Source: alacritty/alacritty-theme (nordfox.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="nordfox"
+THEME_LABEL="Nordfox"
+THEME_MODE="dark"
+
+background="#2e3440"
+foreground="#cdcecf"
+cursor="#abb1bb"
+black="#3b4252"
+red="#bf616a"
+green="#a3be8c"
+yellow="#ebcb8b"
+blue="#81a1c1"
+magenta="#b48ead"
+cyan="#88c0d0"
+white="#e5e9f0"
+brightBlack="#465780"
+brightRed="#d06f79"
+brightGreen="#b1d196"
+brightYellow="#f0d399"
+brightBlue="#8cafd2"
+brightMagenta="#c895bf"
+brightCyan="#93ccdc"
+brightWhite="#e7ecf4"

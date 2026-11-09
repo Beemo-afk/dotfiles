@@ -1,0 +1,26 @@
+# Theme palette: Everforest Dark Soft
+# Source: alacritty/alacritty-theme (everforest_dark_soft.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="everforest-dark-soft"
+THEME_LABEL="Everforest Dark Soft"
+THEME_MODE="dark"
+
+background="#333c43"
+foreground="#d3c6aa"
+cursor="#d3c6aa"
+black="#4d5960"
+red="#e67e80"
+green="#a7c080"
+yellow="#dbbc7f"
+blue="#7fbbb3"
+magenta="#d699b6"
+cyan="#83c092"
+white="#d3c6aa"
+brightBlack="#4d5960"
+brightRed="#e67e80"
+brightGreen="#a7c080"
+brightYellow="#dbbc7f"
+brightBlue="#7fbbb3"
+brightMagenta="#d699b6"
+brightCyan="#83c092"
+brightWhite="#d3c6aa"

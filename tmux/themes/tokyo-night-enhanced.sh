@@ -1,0 +1,26 @@
+# Theme palette: Tokyo Night Enhanced
+# Source: alacritty/alacritty-theme (tokyo_night_enhanced.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="tokyo-night-enhanced"
+THEME_LABEL="Tokyo Night Enhanced"
+THEME_MODE="dark"
+
+background="#08080b"
+foreground="#787c99"
+cursor="#787c99"
+black="#363b54"
+red="#f7768e"
+green="#41a6b5"
+yellow="#e0af68"
+blue="#7aa2f7"
+magenta="#bb9af7"
+cyan="#7dcfff"
+white="#787c99"
+brightBlack="#363b54"
+brightRed="#f7768e"
+brightGreen="#41a6b5"
+brightYellow="#e0af68"
+brightBlue="#7aa2f7"
+brightMagenta="#bb9af7"
+brightCyan="#7dcfff"
+brightWhite="#787c99"

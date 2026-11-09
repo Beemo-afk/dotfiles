@@ -1,0 +1,26 @@
+# Theme palette: Kanagawa Wave
+# Source: alacritty/alacritty-theme (kanagawa_wave.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="kanagawa-wave"
+THEME_LABEL="Kanagawa Wave"
+THEME_MODE="dark"
+
+background="#1f1f28"
+foreground="#dcd7ba"
+cursor="#dcd7ba"
+black="#090618"
+red="#c34043"
+green="#76946a"
+yellow="#c0a36e"
+blue="#7e9cd8"
+magenta="#957fb8"
+cyan="#6a9589"
+white="#c8c093"
+brightBlack="#727169"
+brightRed="#e82424"
+brightGreen="#98bb6c"
+brightYellow="#e6c384"
+brightBlue="#7fb4ca"
+brightMagenta="#938aa9"
+brightCyan="#7aa89f"
+brightWhite="#dcd7ba"

@@ -1,0 +1,26 @@
+# Theme palette: GitHub Dark Dimmed
+# Source: alacritty/alacritty-theme (github_dark_dimmed.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="github-dark-dimmed"
+THEME_LABEL="GitHub Dark Dimmed"
+THEME_MODE="dark"
+
+background="#22272e"
+foreground="#768390"
+cursor="#768390"
+black="#545d68"
+red="#f47067"
+green="#57ab5a"
+yellow="#c69026"
+blue="#539bf5"
+magenta="#b083f0"
+cyan="#39c5cf"
+white="#909dab"
+brightBlack="#636e7b"
+brightRed="#ff938a"
+brightGreen="#6bc46d"
+brightYellow="#daaa3f"
+brightBlue="#6cb6ff"
+brightMagenta="#dcbdfb"
+brightCyan="#56d4dd"
+brightWhite="#cdd9e5"

@@ -1,0 +1,26 @@
+# Theme palette: Terafox
+# Source: alacritty/alacritty-theme (terafox.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="terafox"
+THEME_LABEL="Terafox"
+THEME_MODE="dark"
+
+background="#152528"
+foreground="#e6eaea"
+cursor="#cbd9d8"
+black="#2f3239"
+red="#e85c51"
+green="#7aa4a1"
+yellow="#fda47f"
+blue="#5a93aa"
+magenta="#ad5c7c"
+cyan="#a1cdd8"
+white="#ebebeb"
+brightBlack="#4e5157"
+brightRed="#eb746b"
+brightGreen="#8eb2af"
+brightYellow="#fdb292"
+brightBlue="#73a3b7"
+brightMagenta="#b97490"
+brightCyan="#afd4de"
+brightWhite="#eeeeee"

@@ -1,0 +1,116 @@
+# Yazi theme matched to the tmux rootloops palettes (elderberry / orange).
+#
+# Design: backgrounds are "reset" (transparent) so yazi inherits whatever
+# background tmux paints via window-style. All four tmux themes share the SAME
+# 12 accent colors and differ only in bg/fg, so this single file matches every
+# one of them AND updates live when you switch themes with prefix+T.
+#
+# Accents (shared across all themes):
+#   red #d97780  green #7aa860  yellow #bc904f  blue #6b9bd9
+#   magenta #b77ed1  cyan #52a9a9  + bright variants
+
+[mgr]
+# Cursor row: reverse video so it inverts against the current theme bg/fg,
+# staying legible on both light and dark palettes without hard-coding colors.
+hovered         = { reversed = true, bold = true }
+preview_hovered = { reversed = true }
+
+cwd = { fg = "#6b9bd9", bold = true }   # blue, current path
+
+# Selection / cut / copy markers use the shared accents.
+marker_selected = { fg = "#7aa860", bg = "#7aa860" }   # green
+marker_copied   = { fg = "#bc904f", bg = "#bc904f" }   # yellow
+marker_cut      = { fg = "#d97780", bg = "#d97780" }   # red
+marker_marked   = { fg = "#52a9a9", bg = "#52a9a9" }   # cyan
+
+# Search highlight.
+find_keyword  = { fg = "#bc904f", bold = true, italic = true }   # yellow
+find_position = { fg = "#b77ed1", bold = true }                  # magenta
+
+# Tabs.
+tab_active   = { fg = "#192036", bg = "#6b9bd9", bold = true }   # bg=blue accent
+tab_inactive = { fg = "#909fcc", bg = "reset" }
+
+border_symbol = "│"
+border_style  = { fg = "#6b9bd9" }   # blue, matches tmux active border feel
+
+[status]
+# Mode pill on the left; reversed so it reads on any bg. Colors per mode.
+mode_normal = { fg = "#192036", bg = "#6b9bd9", bold = true }   # blue
+mode_select = { fg = "#192036", bg = "#7aa860", bold = true }   # green
+mode_unset  = { fg = "#192036", bg = "#b77ed1", bold = true }   # magenta
+
+# Progress + permissions text.
+progress_label  = { bold = true }
+progress_normal = { fg = "#6b9bd9" }
+progress_error  = { fg = "#d97780" }
+permissions_t = { fg = "#7aa860" }   # green   (type/exec bits)
+permissions_r = { fg = "#bc904f" }   # yellow  (read)
+permissions_w = { fg = "#d97780" }   # red     (write)
+permissions_x = { fg = "#52a9a9" }   # cyan    (execute)
+permissions_s = { fg = "#4b5987" }   # dim     (no permission)
+
+[mode]
+# The three mode indicators (also used around the status area).
+normal_main = { fg = "#192036", bg = "#6b9bd9", bold = true }
+normal_alt  = { fg = "#6b9bd9", bg = "reset" }
+select_main = { fg = "#192036", bg = "#7aa860", bold = true }
+select_alt  = { fg = "#7aa860", bg = "reset" }
+unset_main  = { fg = "#192036", bg = "#b77ed1", bold = true }
+unset_alt   = { fg = "#b77ed1", bg = "reset" }
+
+[input]
+border   = { fg = "#6b9bd9" }
+title    = {}
+value    = {}
+selected = { reversed = true }
+
+[pick]
+border   = { fg = "#6b9bd9" }
+active   = { fg = "#b77ed1", bold = true }
+inactive = {}
+
+[cmp]
+border      = { fg = "#6b9bd9" }
+active      = { reversed = true }
+inactive    = {}
+
+[tasks]
+border  = { fg = "#6b9bd9" }
+title   = {}
+hovered = { fg = "#b77ed1", underline = true }
+
+[which]
+mask            = { bg = "#2b3554" }
+cand            = { fg = "#52a9a9" }   # cyan
+rest            = { fg = "#909fcc" }
+desc            = { fg = "#b77ed1" }   # magenta
+separator       = "  "
+separator_style = { fg = "#4b5987" }
+
+[confirm]
+border  = { fg = "#6b9bd9" }
+title   = { fg = "#6b9bd9" }
+content = {}
+list    = {}
+btn_yes = { reversed = true }
+btn_no  = {}
+
+[filetype]
+rules = [
+  # Media
+  { mime = "image/*", fg = "#bc904f" },                 # yellow
+  { mime = "{audio,video}/*", fg = "#b77ed1" },          # magenta
+  # Archives
+  { mime = "application/{zip,gzip,x-tar,x-bzip*,x-7z*,x-rar,xz}", fg = "#d97780" }, # red
+  # Docs / data
+  { mime = "application/{json,pdf}", fg = "#52a9a9" },   # cyan
+  { mime = "text/*", fg = "#cdd5eb" },
+  # Empty + orphan links ('is' must pair with url/mime, not name)
+  { mime = "inode/empty", fg = "#4b5987" },
+  { url = "*", is = "orphan", fg = "#d97780" },
+  # Executables
+  { url = "*", is = "exec", fg = "#7aa860" },            # green
+  # Directories
+  { url = "*/", fg = "#6b9bd9", bold = true },           # blue
+]

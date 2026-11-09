@@ -1,0 +1,26 @@
+# Theme palette: Duskfox
+# Source: alacritty/alacritty-theme (duskfox.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="duskfox"
+THEME_LABEL="Duskfox"
+THEME_MODE="dark"
+
+background="#232136"
+foreground="#e0def4"
+cursor="#cdcbe0"
+black="#393552"
+red="#eb6f92"
+green="#a3be8c"
+yellow="#f6c177"
+blue="#569fba"
+magenta="#c4a7e7"
+cyan="#9ccfd8"
+white="#e0def4"
+brightBlack="#47407d"
+brightRed="#f083a2"
+brightGreen="#b1d196"
+brightYellow="#f9cb8c"
+brightBlue="#65b1cd"
+brightMagenta="#ccb1ed"
+brightCyan="#a6dae3"
+brightWhite="#e2e0f7"

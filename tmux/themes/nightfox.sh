@@ -1,0 +1,26 @@
+# Theme palette: Nightfox
+# Source: alacritty/alacritty-theme (nightfox.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="nightfox"
+THEME_LABEL="Nightfox"
+THEME_MODE="dark"
+
+background="#192330"
+foreground="#cdcecf"
+cursor="#aeafb0"
+black="#393b44"
+red="#c94f6d"
+green="#81b29a"
+yellow="#dbc074"
+blue="#719cd6"
+magenta="#9d79d6"
+cyan="#63cdcf"
+white="#dfdfe0"
+brightBlack="#575860"
+brightRed="#d16983"
+brightGreen="#8ebaa4"
+brightYellow="#e0c989"
+brightBlue="#86abdc"
+brightMagenta="#baa1e2"
+brightCyan="#7ad5d6"
+brightWhite="#e4e4e5"

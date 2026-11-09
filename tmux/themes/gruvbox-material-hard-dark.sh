@@ -1,0 +1,26 @@
+# Theme palette: Gruvbox Material Hard Dark
+# Source: alacritty/alacritty-theme (gruvbox_material_hard_dark.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="gruvbox-material-hard-dark"
+THEME_LABEL="Gruvbox Material Hard Dark"
+THEME_MODE="dark"
+
+background="#1d2021"
+foreground="#d4be98"
+cursor="#d4be98"
+black="#32302f"
+red="#ea6962"
+green="#a9b665"
+yellow="#d8a657"
+blue="#7daea3"
+magenta="#d3869b"
+cyan="#89b482"
+white="#d4be98"
+brightBlack="#32302f"
+brightRed="#ea6962"
+brightGreen="#a9b665"
+brightYellow="#d8a657"
+brightBlue="#7daea3"
+brightMagenta="#d3869b"
+brightCyan="#89b482"
+brightWhite="#d4be98"

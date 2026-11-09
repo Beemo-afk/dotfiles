@@ -15,31 +15,35 @@
 # use vardump instead of parr
 alias parr='vardump'
 
-# Set environment
+# -- Environment
+
+# Set environment and configure bash
+HISTCONTROL='ignoredups'
+HISTSIZE=5000
+HISTFILESIZE=5000
+
 export EDITOR='vim'
 export GREP_COLOR='1;36'
-export HISTCONTROL='ignoredups'
-export HISTSIZE=5000
-export HISTFILESIZE=5000
 export LSCOLORS='ExGxbEaECxxEhEhBaDaCaD'
+export MANPAGER='less'
 export PAGER='less'
 export TZ='America/New_York'
 export VISUAL='vim'
 
 # Support colors in less
-export LESS_TERMCAP_mb=$(tput bold; tput setaf 1)
-export LESS_TERMCAP_md=$(tput bold; tput setaf 1)
-export LESS_TERMCAP_me=$(tput sgr0)
-export LESS_TERMCAP_se=$(tput sgr0)
-export LESS_TERMCAP_so=$(tput bold; tput setaf 3; tput setab 4)
-export LESS_TERMCAP_ue=$(tput sgr0)
-export LESS_TERMCAP_us=$(tput smul; tput bold; tput setaf 2)
-export LESS_TERMCAP_mr=$(tput rev)
-export LESS_TERMCAP_mh=$(tput dim)
-export LESS_TERMCAP_ZN=$(tput ssubm)
-export LESS_TERMCAP_ZV=$(tput rsubm)
-export LESS_TERMCAP_ZO=$(tput ssupm)
-export LESS_TERMCAP_ZW=$(tput rsupm)
+export LESS_TERMCAP_mb=$'\e[1;31m'
+export LESS_TERMCAP_md=$'\e[1;31m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[1;33;44m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[4;1;32m'
+export LESS_TERMCAP_mr=$'\e[7m'
+export LESS_TERMCAP_mh=$'\e[2m'
+export LESS_TERMCAP_ZN=$'\e[74m'
+export LESS_TERMCAP_ZV=$'\e[75m'
+export LESS_TERMCAP_ZO=$'\e[73m'
+export LESS_TERMCAP_ZW=$'\e[75m'
 
 # PATH
 path_add ~/bin before
@@ -57,23 +61,30 @@ shopt -s dirspell 2>/dev/null || true
 alias ..='echo "cd .."; cd ..'
 alias ag='rg' # sorry silver searcher
 alias chomd='chmod'
-alias externalip='curl -sS https://www.daveeddy.com/ip'
+alias externalip='curl -sS https://ysap.sh/ip'
 alias gerp='grep'
 alias hl='rg --passthru'
 alias l='lsd'
 alias ll='lsd -lhat'
 alias suod='sudo'
-grep --color=auto < /dev/null &>/dev/null && alias grep='grep --color=auto'
-xdg-open --version &>/dev/null && alias open='xdg-open'
+
+# Aliases (if applicable)
+grep --color=auto < /dev/null &>/dev/null &&
+    alias grep='grep --color=auto'
+command -v xdg-open &>/dev/null &&
+    alias open='xdg-open'
+command -v system_profiler &>/dev/null &&
+    alias wattage='system_profiler SPPowerDataType | grep Wattage'
 
 # Enable color support of ls
-if ls --color=auto &>/dev/null; then
+if ls --color=auto /dev/null &>/dev/null; then
 	alias ls='ls -p --color=auto'
 else
 	alias ls='ls -p -G'
 fi
 
-# Git Aliases
+# -- Git Aliases
+
 alias nb='git checkout -b "$USER-$(date +%s)"' # new branch
 alias ga='git add . --all'
 alias gb='git branch'
@@ -101,139 +112,175 @@ gmb() { # git main branch
 
 # show the diff from inside a branch to the main branch
 gbd() { # git branch diff
-	local mb=$(gmb) || return 1
+	local mb
+	mb=$(gmb) || return 1
 	git diff "$mb..HEAD"
 }
 
 # checkout the main branch and update it
 gcm() { # git checkout $main
-	local mb=$(gmb) || return 1
+	local mb
+	mb=$(gmb) || return 1
 	git checkout "$mb" && git pull
 }
 
 # merge the main branch into our branch
 gmm() { # git merge $main
-	local mb=$(gmb) || return 1
+	local mb
+	mb=$(gmb) || return 1
 	git merge "$mb"
 }
 
-# Prompt
-# Store `tput` colors for future use to reduce fork+exec
-# the array will be 0-255 for colors, 256 will be sgr0
-# and 257 will be bold
-COLOR256=()
-COLOR256[0]=$(tput setaf 1)
-COLOR256[256]=$(tput sgr0)
-COLOR256[257]=$(tput bold)
+# -- Prompt logic
 
-# Colors for use in PS1 that may or may not change when
-# set_prompt_colors is run
-PROMPT_COLORS=()
-
-# Change the prompt colors to a theme, themes are 0-29
-set_prompt_colors() {
-	local h=${1:-0}
-	local color=
-	local i=0
+# change the prompt colors to a theme
+# there are 116 possible themes - themes are 0-115
+prompt-set-theme() {
+	local theme=${1:-0}
 	local j=0
-	for i in {22..231}; do
-		((i % 30 == h)) || continue
-
-		color=${COLOR256[$i]}
-		# cache the tput colors
-		if [[ -z $color ]]; then
-			COLOR256[$i]=$(tput setaf "$i")
-			color=${COLOR256[$i]}
-		fi
-		PROMPT_COLORS[$j]=$color
+	for ((i = theme; i <= 255; i += 30)); do
+		PROMPT_COLORS[j]=$'\e[38;5;'${i}m
 		((j++))
 	done
 }
 
-# Construct the prompt
-# [(exit code)] <user> - <hostname> <uname> <cwd> [git branch] <$|#>
+prompt-init() {
+	local red=$'\e[31m'
+	local reset=$'\e[0m'
+	local bold=$'\e[1m'
 
-# exit code of last process
-PS1='$(ret=$?;(($ret!=0)) && echo "\[${COLOR256[0]}\]($ret) \[${COLOR256[256]}\]")'
+	# custom prompt for YSAP videos
+	if [[ $ITERM_PROFILE == 'YSAP'* ]]; then
+		# username
+		PS1='\[${PROMPT_COLORS[0]}\]\u\['"$reset"'\]'
 
-# username (red for root)
-PS1+='\[${PROMPT_COLORS[0]}\]\[${COLOR256[257]}\]$(((UID==0)) && echo "\[${COLOR256[0]}\]")\u\[${COLOR256[256]}\] - '
+		# @
+		PS1+='\[${PROMPT_COLORS[1]}\]\['"$bold"'\]@\['"$reset"'\]'
 
-# zonename (global zone warning)
-PS1+='\[${COLOR256[0]}\]\[${COLOR256[257]}\]'"$(zonename 2>/dev/null | grep -q '^global$' && echo 'GZ:')"'\[${COLOR256[256]}\]'
+		# hostname
+		PS1+='\[${PROMPT_COLORS[3]}\]ysap '
 
-# hostname
-PS1+='\[${PROMPT_COLORS[3]}\]\h '
+		# cwd (this makes it too horizontal)
+		# PS1+='\[${PROMPT_COLORS[5]}\]\w '
 
-# uname
-PS1+='\[${PROMPT_COLORS[2]}\]'"$(uname | tr '[:upper:]' '[:lower:]')"' '
+		# prompt character
+		PS1+='\[${PROMPT_COLORS[2]}\]\$\['"$reset"'\] '
 
-# cwd
-PS1+='\[${PROMPT_COLORS[5]}\]\w '
+		PROMPT_DIRTRIM=1
 
-# optional git branch
-PS1+='$(branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null); [[ -n $branch ]] && echo "\[${PROMPT_COLORS[2]}\](\[${PROMPT_COLORS[3]}\]git:$branch\[${PROMPT_COLORS[2]}\]) ")'
+		return
+	fi
 
-# prompt character
-PS1+='\[${PROMPT_COLORS[0]}\]\$\[${COLOR256[256]}\] '
+	# get host info only once
+	local zonename=$(zonename 2>/dev/null)
+	local uname=$(uname | tr '[:upper:]' '[:lower:]')
 
-# set the theme
-set_prompt_colors 24
+	# Construct the prompt:
+	# [(exit code)] <user> - <hostname> <uname> <cwd> [git branch] <$|#>
 
-# Prompt command
-_prompt_command() {
-        local user=$USER
-        local host=${HOSTNAME%%.*}
-        local pwd=${PWD/#$HOME/\~}
-        local ssh=
-        [[ -n $SSH_CLIENT ]] && ssh='[ssh] '
-        printf "\033]0;%s%s@%s:%s\007" "$ssh" "$user" "$host" "$pwd"
-}
-PROMPT_COMMAND=_prompt_command
+	# exit code of last process
+	PS1='$(c=$?;((c!=0))&&echo "\['"$red"'\]($c) \['"$reset"'\]")'
 
-PROMPT_DIRTRIM=6
-
-# custom prompt for YSAP
-if [[ $ITERM_PROFILE == 'YSAP-'* ]]; then
 	# username (red for root)
-	PS1='\[${PROMPT_COLORS[0]}\]dave\[${COLOR256[256]}\]'
+	PS1+='\[${PROMPT_COLORS[0]}\]\['"$bold"'\]'
+	PS1+='$(((UID==0))&&echo "\['"$red"'\]")\u\['"$reset"'\] - '
 
-	# @
-	PS1+='\[${PROMPT_COLORS[1]}\]\[${COLOR256[257]}\]@\[${COLOR256[256]}\]'
+	# zonename (global zone warning)
+	if [[ $zonename == 'global' ]]; then
+		PS1+='\['"$red"'\]\['"$bold"'\]GZ:\['"$reset"'\]'
+	fi
 
 	# hostname
-	PS1+='\[${PROMPT_COLORS[3]}\]ysap '
+	PS1+='\[${PROMPT_COLORS[3]}\]\h '
+
+	# uname
+	PS1+='\[${PROMPT_COLORS[2]}\]'"$uname"' '
 
 	# cwd
-	#PS1+='\[${PROMPT_COLORS[5]}\]\w '
+	PS1+='\[${PROMPT_COLORS[5]}\]\w '
+
+	# optional git branch
+	#
+	# THIS IS UNFORTUNATE LOL. i hate how long this line is, but i
+	# purposefully try to keep this as tight as possible because even just
+	# spacing it all out has a noticeable effect on speed.
+	PS1+='$(b=$(git rev-parse --abbrev-ref HEAD 2>/dev/null);[[ -n $b ]]'
+	PS1+='&&echo -n "\[${PROMPT_COLORS[2]}\](\[${PROMPT_COLORS[3]}\]'
+	PS1+='git:$b\[${PROMPT_COLORS[2]}\]) ")'
 
 	# prompt character
-	PS1+='\[${PROMPT_COLORS[2]}\]\$\[${COLOR256[256]}\] '
+	PS1+='\[${PROMPT_COLORS[0]}\]\$\['"$reset"'\] '
 
-	PROMPT_DIRTRIM=1
-fi
+	# initalize a basic theme just to ensure some colors are set
+	prompt-set-theme 0
+}
+
+prompt-update() {
+	local user=$USER
+	local host=${HOSTNAME%%.*}
+
+	# get the PWD from the prompt as that handles escaping dangerous chars
+	# for us
+	local s='\w'
+	local pwd=${s@P}
+
+	# update title bar
+	local ssh=
+	[[ -n $SSH_CLIENT ]] && ssh='[ssh] '
+	printf '\e]0;%s%s@%s:%s\a' "$ssh" "$user" "$host" "$pwd"
+}
+
+PROMPT_COLORS=()
+PROMPT_COMMAND=prompt-update
+PROMPT_DIRTRIM=6
+
+prompt-init
+prompt-set-theme 24
+
+# -- Useful functions
+
+# upload a file to my personal CDN
+cdn() {
+	local file=$1
+	local bname=${file##*/}
+
+	[[ -n $file && -n $bname ]] || return 1
+
+	local url
+	printf -v url '%(%Y/%m/%d)T/%s' -1 "$bname"
+	local remote_file="./cdn/$url"
+
+	# use rsync over scp because we can skip overwriting files
+	rsync -avh --mkpath --progress --ignore-existing -- \
+	    "$file" "cdn:$remote_file" || return 1
+
+	echo "https://cdn.ysap.sh/$url"
+}
 
 # print a colorized diff
 colordiff() {
-	local red=$(tput setaf 1 2>/dev/null)
-	local green=$(tput setaf 2 2>/dev/null)
-	local cyan=$(tput setaf 6 2>/dev/null)
-	local reset=$(tput sgr0 2>/dev/null)
+	local red=$'\e[31m'
+	local green=$'\e[32m'
+	local cyan=$'\e[36m'
+	local reset=$'\e[0m'
 
-	diff -u "$@" | awk "
-	/^\-/ {
-		printf(\"%s\", \"$red\");
+	diff -u "$@" | awk \
+		-v "red=$red" -v "green=$green" \
+		-v "cyan=$cyan" -v "reset=$reset" \
+		'
+	/^-/ {
+		printf("%s", red);
 	}
 	/^\+/ {
-		printf(\"%s\", \"$green\");
+		printf("%s", green);
 	}
 	/^@/ {
-		printf(\"%s\", \"$cyan\");
+		printf("%s", cyan);
 	}
 
 	{
-		print \$0 \"$reset\";
-	}"
+		print $0 reset;
+	}'
 
 	return "${PIPESTATUS[0]}"
 }
@@ -242,9 +289,9 @@ colordiff() {
 colors() {
 	local i
 	for i in {0..255}; do
-		printf "\x1b[38;5;${i}mcolor %d\n" "$i"
+		printf '\e[38;5;%dmcolor %d\n' "$i" "$i"
 	done
-	tput sgr0
+	printf '\e[0m'
 }
 
 # Copy stdin to the clipboard
@@ -253,6 +300,39 @@ copy() {
 	    xsel 2>/dev/null ||
 	    clip.exe
 
+}
+
+dump-palette() {
+	local fd
+	exec {fd}<>/dev/tty || fatal 'failed to open TTY'
+
+	local re='rgb:([0-9a-f]{4})\/([0-9a-f]{4})\/([0-9a-f]{4})'
+	local code s r g b
+	for code in 4\;{0..15} 10 11 12 17 19; do
+		# query the terminal for palette info
+		printf '\e]%s;?\e\\' "$code" >&$fd
+
+		# read the response into a string (removing escape chars)
+		read -rs -d '\' -u "$fd" s
+		s=${s//$'\e'}
+
+		if ! [[ $s =~ $re ]]; then
+			echo "$code = <failed>"
+			continue
+		fi
+
+		# parse the response
+		r=${BASH_REMATCH[1]}
+		g=${BASH_REMATCH[2]}
+		b=${BASH_REMATCH[3]}
+
+		r=$((16#$r / 257))
+		g=$((16#$g / 257))
+		b=$((16#$b / 257))
+
+		printf '%s = #%02x%02x%02x\n' "$code" "$r" "$g" "$b"
+	done
+	exec {fd}>&-
 }
 
 # Convert epoch to human readable (print current date if no args)
@@ -279,7 +359,7 @@ gho() {
 
 	# extract the username and repo name
 	local a
-	IFS=:/ read -a a <<< "$url"
+	IFS=:/ read -r -a a <<< "$url"
 	local len=${#a[@]}
 	local user=${a[len-2]}
 	local repo=${a[len-1]%.git}
@@ -331,7 +411,8 @@ meminfo() {
 
 # print lines over X columns (defaults to 80)
 over() {
-	awk -v c="${1:-80}" 'length($0) > c {
+	local c=${1:-80}
+	expand | awk -v "c=$c" 'length($0) > c {
 		printf("%4d %s\n", NR, $0);
 	}'
 }
@@ -346,102 +427,104 @@ truecolor-rainbow() {
 		((g > 255)) && g=$((510 - g))
 		printf '\033[48;2;%d;%d;%dm ' "$r" "$g" "$b"
 	done
-	tput sgr0
-	echo
+	printf '\e[0m\n'
 }
 
 # Follow redirects to untiny a tiny url
 untiny() {
-	local location=$1
-	local last_location=''
+	local url=$1
 
-	while [[ -n $location ]]; do
-		[[ -n $last_location ]] && echo " -> $last_location"
-		last_location=$location
-		read -r _ location < \
-		    <(curl -sI "$location" | grep 'Location: ' | tr -d '[:cntrl:]')
+	while [[ -n $url ]]; do
+		echo "-> $url"
+		url=$(curl -sSI -o /dev/null -w '%header{location}' "$url") \
+		    || return 1
 	done
-	echo "$last_location"
+
+	return 0
 }
 
 # ACD Custom Functions
 # Make and move to new directory
 mcd() {
-    mkdir -p "$1" && cd "$1"
+	mkdir -p "$1" && cd "$1"
 }
 
 # Get my ip:
 myip() {
-    echo "ip is: $(curl -s https://ipinfo.io/ip)"
+	echo "ip is: $(curl -s https://ipinfo.io/ip)"
 }
 
-# Make directory, navigate to it, and open a second terminal in the new directory
 # Convert the pre-made ssh string to local port forward format
 emr_proxy() {
-    # Default ports if not specified
-    local forward_port=${2:-8157}
-    local ec2_port=${3:-18080}
+	# Default ports if not specified
+	local forward_port=${2:-8157}
+	local ec2_port=${3:-18080}
+	local re='ssh[[:space:]]+-i[[:space:]]+([^[:space:]]+)'
+	re+='[[:space:]]+([^@]+)@([^[:space:]]+)'
 
-    # Extract components from the original SSH command using regex
-    if [[ $1 =~ ssh[[:space:]]+-i[[:space:]]+([^[:space:]]+)[[:space:]]+([^@]+)@([^[:space:]]+) ]]; then
-        local key_path="${BASH_REMATCH[1]}"
-        local user="${BASH_REMATCH[2]}"
-        local host="${BASH_REMATCH[3]}"
+	# Extract components from the original SSH command using regex
+	if [[ $1 =~ $re ]]; then
+		local key_path="${BASH_REMATCH[1]}"
+		local user="${BASH_REMATCH[2]}"
+		local host="${BASH_REMATCH[3]}"
 
-        # Construct the new SSH command
-        local cmd="ssh -i \"$key_path\" -N -L ${forward_port}:${host}:${ec2_port} ${user}@${host}"
+		# Construct the new SSH command
+		local cmd="ssh -i \"$key_path\" -N"
+		cmd+=" -L ${forward_port}:${host}:${ec2_port} ${user}@${host}"
 
-        # Print the command
-        echo "Executing command:"
-        echo "$cmd"
-        echo
+		# Print the command
+		echo "Executing command:"
+		echo "$cmd"
+		echo
 
-        # Execute the command
-        eval "$cmd"
-    else
-        echo "Error: Invalid SSH command format"
-        echo "Usage: emr_proxy \"ssh -i key.pem user@host\" [forward_port] [ec2_port]"
-        return 1
-    fi
+		# Execute the command
+		eval "$cmd"
+	else
+		echo "Error: Invalid SSH command format"
+		echo 'Usage: emr_proxy "ssh -i key.pem user@host"' \
+		    '[forward_port] [ec2_port]'
+		return 1
+	fi
 }
 
+# Make directory, navigate to it, and open a new terminal in that directory
 mcdd() {
-    # Create directory and navigate to it
-    mkdir -p "$1" && cd "$1"
-    
-    # Determine which terminal emulator is being used and open a new tab accordingly
-    current_dir=$(pwd)
-    
-    # For Linux terminals (GNOME Terminal, Konsole, xfce4-terminal)
-    if command -v gnome-terminal &> /dev/null; then
-        gnome-terminal --tab --working-directory="$current_dir"
-    elif command -v konsole &> /dev/null; then
-        konsole --new-tab --workdir "$current_dir"
-    elif command -v xfce4-terminal &> /dev/null; then
-        xfce4-terminal --tab --working-directory="$current_dir"
-    # For macOS Terminal (without osascript)
-    elif [[ "$OSTYPE" == "darwin"* ]]; then
-        # Open a new terminal window in the current directory
-        open -a Terminal "$current_dir"
-    else
-        echo "Unable to automatically open a new terminal tab."
-        echo "A new directory has been created and you're now in: $current_dir"
-    fi
-    
-    echo "Directory created at: $current_dir"
-}
+	# Create directory and navigate to it
+	mkdir -p "$1" && cd "$1"
 
+	# Open a new tab/window with whichever terminal emulator is available
+	current_dir=$(pwd)
+
+	# For Linux terminals (GNOME Terminal, Konsole, xfce4-terminal)
+	if command -v gnome-terminal &> /dev/null; then
+		gnome-terminal --tab --working-directory="$current_dir"
+	elif command -v konsole &> /dev/null; then
+		konsole --new-tab --workdir "$current_dir"
+	elif command -v xfce4-terminal &> /dev/null; then
+		xfce4-terminal --tab --working-directory="$current_dir"
+	# For macOS Terminal (without osascript)
+	elif [[ "$OSTYPE" == "darwin"* ]]; then
+		# Open a new terminal window in the current directory
+		open -a Terminal "$current_dir"
+	else
+		echo "Unable to automatically open a new terminal tab."
+		echo "A new directory has been created and you're now in:" \
+		    "$current_dir"
+	fi
+
+	echo "Directory created at: $current_dir"
+}
 
 # Load external files
-. ~/.bash_aliases    2>/dev/null || true
-. ~/.bashrc.local    2>/dev/null || true
+. ~/.bash_aliases 2>/dev/null
+. ~/.bashrc.local 2>/dev/null
 
 # load completion
-. /etc/bash/bash_completion 2>/dev/null ||
-	. ~/.bash_completion 2>/dev/null
+. ~/.bash_completion
 
 path_clean
 
+# return success no matter what
 true
 
-[[ "$TERM_PROGRAM" == "kiro" ]] && . "$(kiro --locate-shell-integration-path bash)"
+. "$HOME/.local/bin/env"

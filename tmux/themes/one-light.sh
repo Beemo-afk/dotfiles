@@ -1,0 +1,26 @@
+# Theme palette: One Light
+# Source: alacritty/alacritty-theme (one_light.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="one-light"
+THEME_LABEL="One Light"
+THEME_MODE="light"
+
+background="#f8f8f8"
+foreground="#2a2b33"
+cursor="#2a2b33"
+black="#000000"
+red="#de3d35"
+green="#3e953a"
+yellow="#d2b67b"
+blue="#2f5af3"
+magenta="#a00095"
+cyan="#3e953a"
+white="#bbbbbb"
+brightBlack="#000000"
+brightRed="#de3d35"
+brightGreen="#3e953a"
+brightYellow="#d2b67b"
+brightBlue="#2f5af3"
+brightMagenta="#a00095"
+brightCyan="#3e953a"
+brightWhite="#ffffff"

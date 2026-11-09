@@ -42,13 +42,21 @@ set title			" Set the title
 " ---------------------------------------------
 " Theme / Color Scheme
 " ---------------------------------------------
+colorscheme default
 set background=light            " Light background is best
 hi Comment ctermfg=63		" Brighten up comment colors
+hi Search ctermbg=LightYellow	" Search color
 
 " ---------------------------------------------
 " Abbreviations
 " ---------------------------------------------
-iab <expr> me:: strftime("Author: Dave Eddy <dave@daveeddy.com><cr>Date: %B %d, %Y<cr>License: MIT")
+iabbrev <expr> me::
+\ "# Created\n" .
+\ "Author: Dave Eddy <ysap@daveeddy.com>\n" .
+\ "Date: " . strftime("%B %d, %Y") . "\n" .
+\ "License: MIT\n\n" .
+\ "# Contributors\n" .
+\ "- Dave Eddy <ysap@daveeddy.com>"
 
 " ---------------------------------------------
 " Aliases
@@ -107,6 +115,12 @@ if has("autocmd")
 
 	" TXT files
 	autocmd FileType                            text setlocal spell
+
+	" Mermaid files
+	autocmd FileType                            mermaid setlocal sw=4 sts=4 et
+
+	" Preview Menu
+	highlight Pmenu ctermbg=233 ctermfg=250
 endif
 
 " ---------------------------------------------
@@ -133,7 +147,13 @@ highlight SpellLocal term=underline cterm=underline
 " ---------------------------------------------
 let g:airline_powerline_fonts = 0
 let g:airline_theme = "deus"
+
+let g:vim_markdown_folding_disabled = 1
 let g:rust_recommended_style = 1
+
+" -- configure ale
+
+" disable all linters i care about except for rust
 let g:ale_linters = {
 \  'bash': [],
 \  'sh': [],
@@ -141,7 +161,25 @@ let g:ale_linters = {
 \  'rust': ['analyzer'],
 \}
 let g:ale_completion_enabled = 0
-let g:vim_markdown_folding_disabled = 1
+
+" only run lint when file is saved
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter = 0
+
+" configure preview window
+let g:ale_floating_preview = 1
+let g:ale_floating_window_border = ['│', '─', '╭', '╮', '╯', '╰', '│', '─']
+let g:ale_hover_to_floating_preview = 1
+
+" quiet down ale
+let g:ale_virtualtext_cursor = 0
+
+" ---------------------------------------------
+" Key Binds
+" ---------------------------------------------
+autocmd FileType rust nnoremap gd :ALEGoToDefinition<CR>
+autocmd FileType rust nnoremap <silent> K :ALEHover<CR>
 
 " ---------------------------------------------
 " Source local config

@@ -1,0 +1,26 @@
+# Theme palette: Dawnfox
+# Source: alacritty/alacritty-theme (dawnfox.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="dawnfox"
+THEME_LABEL="Dawnfox"
+THEME_MODE="light"
+
+background="#faf4ed"
+foreground="#575279"
+cursor="#625c87"
+black="#575279"
+red="#b4637a"
+green="#618774"
+yellow="#ea9d34"
+blue="#286983"
+magenta="#907aa9"
+cyan="#56949f"
+white="#e5e9f0"
+brightBlack="#5f5695"
+brightRed="#c26d85"
+brightGreen="#629f81"
+brightYellow="#eea846"
+brightBlue="#2d81a3"
+brightMagenta="#9a80b9"
+brightCyan="#5ca7b4"
+brightWhite="#e6ebf3"

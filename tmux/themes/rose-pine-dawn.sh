@@ -1,0 +1,26 @@
+# Theme palette: Rosé Pine Dawn
+# Source: alacritty/alacritty-theme (rose_pine_dawn.toml)
+# Generated for apply-theme.sh; defines only data (no side effects).
+THEME_NAME="rose-pine-dawn"
+THEME_LABEL="Rosé Pine Dawn"
+THEME_MODE="light"
+
+background="#faf4ed"
+foreground="#575279"
+cursor="#cecacd"
+black="#f2e9e1"
+red="#b4637a"
+green="#286983"
+yellow="#ea9d34"
+blue="#56949f"
+magenta="#907aa9"
+cyan="#d7827e"
+white="#575279"
+brightBlack="#9893a5"
+brightRed="#b4637a"
+brightGreen="#286983"
+brightYellow="#ea9d34"
+brightBlue="#56949f"
+brightMagenta="#907aa9"
+brightCyan="#d7827e"
+brightWhite="#575279"
